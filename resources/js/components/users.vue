@@ -3,8 +3,8 @@
 import axios from 'axios';
 import { ref, onMounted, reactive} from 'vue';
 const users = ref([]);
-const errors = ref({})
-const success = ref('')
+const errors = ref({});
+
 
 const userForm = reactive ({
     name:'',
