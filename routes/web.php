@@ -25,4 +25,7 @@ Route::get('/', function () {
 
 Route::get('/api/users', [UserController::class,'index'])->name('getUser');
 Route::post('/api/users', [UserController::class,'store'])->name('insertUser');
+Route::put('/api/users/{id}', [UserController::class,'update'])->name('updateuser');
+Route::delete('/api/users/{id}', [UserController::class,'delete'])->name('deleteUser');
+
 Route::get('{view}', AppController::class)->where('view','(.*)');

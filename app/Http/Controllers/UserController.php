@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -19,5 +21,36 @@ class UserController extends Controller
      ]);
      
       return User::create($request->all());
+   }
+
+   public function update(User $user, Request $request,$id){  
+
+      $request->validate([
+         'name' => 'required',
+         'email' => [
+            'required',
+            'email',
+            Rule::unique('users')->ignore($id),
+         ],
+         'password' => 'nullable|min:8',
+     ]);
+      
+      $update = User::findOrFail($id);
+
+      User::findOrFail($id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password ? Hash::make($request->password) : $update->password,
+      ]);
+   
+      $new = User::findOrFail($id);
+      return $new;
+      
+   }
+
+   public function destroy($id){
+      User::findOrFail($id)->delete();
+
+      return response()->noContent();
    }
 }
